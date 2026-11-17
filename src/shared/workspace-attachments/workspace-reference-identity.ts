@@ -16,7 +16,8 @@ const PUBLIC_REFERENCE_HOSTS = new Set([
   'gitlab.com',
   'codeberg.org',
   'bitbucket.org',
-  'dev.azure.com'
+  'dev.azure.com',
+  'cnb.cool'
 ])
 
 function referenceHostProvider(host: string): WorkspaceAttachment['provider'] | undefined {

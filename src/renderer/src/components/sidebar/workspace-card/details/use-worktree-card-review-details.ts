@@ -99,6 +99,7 @@ export function useWorktreeCardReviewDetails({
   const linkedBitbucketPR = worktree.linkedBitbucketPR ?? null
   const linkedAzureDevOpsPR = worktree.linkedAzureDevOpsPR ?? null
   const linkedGiteaPR = worktree.linkedGiteaPR ?? null
+  const linkedCnbPR = worktree.linkedCnbPR ?? null
   const { prDisplay, cachedBranchFallbackGitHubPRNumber } = deriveWorktreeCardPrDisplay(
     worktree,
     hostedReviewEntry,
@@ -128,6 +129,7 @@ export function useWorktreeCardReviewDetails({
     linkedBitbucketPR,
     linkedAzureDevOpsPR,
     linkedGiteaPR,
+    linkedCnbPR,
     cachedBranchFallbackGitHubPRNumber,
     prDisplay
   }

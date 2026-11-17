@@ -46,7 +46,8 @@ export const ATTACHMENT_INPUT_KINDS = [
     value: 'azure-devops-pr',
     label: () => translate('workspace.links.kind.azure_devops_pr', 'Azure DevOps PR')
   },
-  { value: 'gitea-pr', label: () => translate('workspace.links.kind.gitea_pr', 'Gitea PR') }
+  { value: 'gitea-pr', label: () => translate('workspace.links.kind.gitea_pr', 'Gitea PR') },
+  { value: 'cnb-pr', label: () => translate('workspace.links.kind.cnb_pr', 'CNB PR') }
 ] as const
 export type AttachmentInputKind = (typeof ATTACHMENT_INPUT_KINDS)[number]['value']
 
@@ -62,7 +63,8 @@ export function workspaceAttachmentProviderLabel(item: WorkspaceAttachment): str
     jira: 'Jira',
     bitbucket: 'Bitbucket',
     'azure-devops': 'Azure DevOps',
-    gitea: 'Gitea'
+    gitea: 'Gitea',
+    cnb: 'CNB'
   }
   return labels[item.provider]
 }
@@ -142,9 +144,15 @@ export function parseWorkspaceAttachmentInput(
   if (kind === 'gitlab-mr' || kind === 'gitlab-issue') {
     return { provider: 'gitlab', type: kind === 'gitlab-mr' ? 'mr' : 'issue', number }
   }
-  if (kind === 'bitbucket-pr' || kind === 'azure-devops-pr' || kind === 'gitea-pr') {
+  if (kind === 'bitbucket-pr' || kind === 'azure-devops-pr' || kind === 'gitea-pr' || kind === 'cnb-pr') {
     const provider =
-      kind === 'bitbucket-pr' ? 'bitbucket' : kind === 'gitea-pr' ? 'gitea' : 'azure-devops'
+      kind === 'bitbucket-pr'
+        ? 'bitbucket'
+        : kind === 'gitea-pr'
+          ? 'gitea'
+          : kind === 'cnb-pr'
+            ? 'cnb'
+            : 'azure-devops'
     return { provider, type: 'pr', number }
   }
   return { provider: 'github', type: kind === 'github-pr' ? 'pr' : 'issue', number }
@@ -177,7 +185,9 @@ export function getActiveWorkspaceReviewKey(worktree: Worktree | undefined): str
             ? worktree.linkedAzureDevOpsPR === item.number
             : item.provider === 'gitea'
               ? worktree.linkedGiteaPR === item.number
-              : false
+              : item.provider === 'cnb'
+                ? worktree.linkedCnbPR === item.number
+                : false
   )
   return active ? getWorkspaceAttachmentKey(active) : null
 }
@@ -205,7 +215,9 @@ function parseOtherReviewUrl(value: string): WorkspaceAttachment | null {
       ? 'bitbucket'
       : match[1] === 'pullrequest'
         ? 'azure-devops'
-        : 'gitea'
+        : url.hostname.toLowerCase() === 'cnb.cool'
+          ? 'cnb'
+          : 'gitea'
   return { provider, type: 'pr', number, url: value }
 }
 
@@ -232,7 +244,9 @@ export function canUseWorkspaceReviewForChecks(
             ? 'azure-devops'
             : host === 'codeberg.org'
               ? 'gitea'
-              : undefined)
+              : host === 'cnb.cool'
+                ? 'cnb'
+                : undefined)
   if (provider && item.provider !== provider) {
     return false
   }

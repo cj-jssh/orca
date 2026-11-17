@@ -11,7 +11,8 @@ import {
 const SIGN_IN_COMMANDS = { github: 'gh auth login', gitlab: 'glab auth login' } as const
 const SIGN_IN_VARIABLES = {
   'azure-devops': 'ORCA_AZURE_DEVOPS_TOKEN',
-  gitea: 'ORCA_GITEA_TOKEN'
+  gitea: 'ORCA_GITEA_TOKEN',
+  cnb: 'ORCA_CNB_TOKEN'
 } as const
 
 export function authRequiredDetail(
@@ -30,6 +31,12 @@ export function authRequiredDetail(
       'sourceControl.createReviewFailure.authRequiredCommand',
       '{{providerName}} is not authenticated. Next step: run {{command}} in this environment.',
       { providerName: copy.providerName, command: SIGN_IN_COMMANDS[provider] }
+    )
+  }
+  if (provider === 'cnb') {
+    return t(
+      'sourceControl.createReviewFailure.authRequiredCnb',
+      'CNB is not authenticated. Next step: set ORCA_CNB_TOKEN in this environment, or connect CNB in Settings > Integrations.'
     )
   }
   return t(
@@ -56,6 +63,12 @@ export function hostedReviewSignInHint(
       'sourceControl.createReviewFailure.signInHintCommand',
       'Run {{command}} in this environment',
       { command: SIGN_IN_COMMANDS[supported] }
+    )
+  }
+  if (supported === 'cnb') {
+    return t(
+      'sourceControl.createReviewFailure.signInHintCnb',
+      'Set ORCA_CNB_TOKEN or connect CNB in Settings > Integrations'
     )
   }
   return t(

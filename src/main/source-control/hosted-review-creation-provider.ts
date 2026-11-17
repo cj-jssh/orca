@@ -4,6 +4,7 @@ import type { HostedReviewCreationProvider } from '../../shared/source-control/h
 import { isAzureDevOpsReviewCreationAuthenticated } from '../azure-devops/pull-request-creation'
 import { isBitbucketReviewCreationAuthenticated } from '../bitbucket/pull-request-creation'
 import { isGiteaReviewCreationAuthenticated } from '../gitea/pull-request-creation'
+import { isCnbReviewCreationAuthenticated } from '../cnb/pull-request-creation'
 import { getEnterpriseGitHubRepoSlug } from '../github/repositories/github-enterprise-repository'
 import { acquire, release } from '../github/execution/github-operation-slots'
 import { ghExecFileAsync } from '../git/command-runner/hosted-cli/gh-exec-file'
@@ -99,6 +100,14 @@ export function reviewCopy(provider: HostedReviewProvider): {
       authInstruction: 'Set ORCA_GITEA_TOKEN'
     }
   }
+  if (provider === 'cnb') {
+    return {
+      shortLabel: 'PR',
+      reviewLabel: 'pull request',
+      providerName: 'CNB',
+      authInstruction: 'Set ORCA_CNB_TOKEN or connect CNB in Settings > Integrations'
+    }
+  }
   if (provider === 'bitbucket') {
     return {
       shortLabel: 'PR',
@@ -126,6 +135,9 @@ export async function isProviderAuthenticated(
   }
   if (provider === 'gitea') {
     return isGiteaReviewCreationAuthenticated()
+  }
+  if (provider === 'cnb') {
+    return isCnbReviewCreationAuthenticated()
   }
   if (provider === 'bitbucket') {
     // Bitbucket authentication must not fall through to GitHub login requirements.

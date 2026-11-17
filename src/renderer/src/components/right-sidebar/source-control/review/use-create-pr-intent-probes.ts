@@ -44,6 +44,7 @@ export function useSourceControlCreatePrIntentProbes({
   linkedGitHubPR: SourceControlLinkedReviews['linkedGitHubPR']
   linkedGitLabMR: SourceControlLinkedReviews['linkedGitLabMR']
   linkedGiteaPR: SourceControlLinkedReviews['linkedGiteaPR']
+  linkedCnbPR: SourceControlLinkedReviews['linkedCnbPR']
   setGitBranchCompareResult: SourceControlStoreActions['setGitBranchCompareResult']
   setGitStatus: SourceControlStoreActions['setGitStatus']
   setHostedReviewCreationState: SourceControlHostedReviewState['setHostedReviewCreationState']

@@ -48,6 +48,7 @@ export type ChecksPanelManualRefreshInput = Pick<
     | 'linkedAzureDevOpsPR'
     | 'linkedBitbucketPR'
     | 'linkedGiteaPR'
+    | 'linkedCnbPR'
     | 'linkedGitLabMR'
     | 'linkedPR'
     | 'pr'

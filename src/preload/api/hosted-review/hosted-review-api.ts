@@ -4,6 +4,20 @@ import type {
   BitbucketConnectionStatus
 } from '../../../shared/bitbucket/bitbucket-credentials'
 import type {
+  CnbConnectArgs,
+  CnbConnectResult,
+  CnbConnectionStatus
+} from '../../../shared/cnb/cnb-credentials'
+import type {
+  CnbCreateIssueArgs,
+  CnbCreateIssueResult,
+  CnbIssueContextResult,
+  CnbIssueDetailResult,
+  CnbIssueListResult,
+  CnbMyIssuesArgs,
+  CnbRepoIssuesArgs
+} from '../../../shared/cnb/cnb-issues'
+import type {
   CreateHostedReviewArgs,
   CreateHostedReviewResult,
   CreateStackedHostedReviewArgs,
@@ -33,4 +47,15 @@ export type BitbucketApi = {
   connect: (args: BitbucketConnectArgs) => Promise<BitbucketConnectResult>
   disconnect: () => Promise<void>
   status: () => Promise<BitbucketConnectionStatus>
+}
+
+export type CnbApi = {
+  connect: (args: CnbConnectArgs) => Promise<CnbConnectResult>
+  disconnect: () => Promise<void>
+  status: () => Promise<CnbConnectionStatus>
+  listRepoIssues: (args: CnbRepoIssuesArgs) => Promise<CnbIssueListResult>
+  listMyIssues: (args: CnbMyIssuesArgs) => Promise<CnbIssueListResult>
+  getIssue: (args: { repoPath: string; number: number }) => Promise<CnbIssueDetailResult>
+  issueContext: (args: { repoPath: string; number: number }) => Promise<CnbIssueContextResult>
+  createIssue: (args: CnbCreateIssueArgs) => Promise<CnbCreateIssueResult>
 }

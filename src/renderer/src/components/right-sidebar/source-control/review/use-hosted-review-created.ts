@@ -45,6 +45,7 @@ export function useSourceControlHostedReviewCreated({
   linkedGitHubPR: SourceControlLinkedReviews['linkedGitHubPR']
   linkedGitLabMR: SourceControlLinkedReviews['linkedGitLabMR']
   linkedGiteaPR: SourceControlLinkedReviews['linkedGiteaPR']
+  linkedCnbPR: SourceControlLinkedReviews['linkedCnbPR']
   refreshActiveGitStatusAfterMutation: SourceControlStatusRefresh['refreshActiveGitStatusAfterMutation']
   setRightSidebarOpen: SourceControlStoreActions['setRightSidebarOpen']
   setRightSidebarTab: SourceControlStoreActions['setRightSidebarTab']

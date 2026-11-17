@@ -58,6 +58,7 @@ type ChecksPanelGitStatusEffectsInput = Pick<
     | 'linkedAzureDevOpsPR'
     | 'linkedBitbucketPR'
     | 'linkedGiteaPR'
+    | 'linkedCnbPR'
     | 'linkedGitLabMR'
     | 'linkedPR'
     | 'fallbackGitHubPRNumber'

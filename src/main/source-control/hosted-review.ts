@@ -10,6 +10,7 @@ import {
 } from '../../shared/source-control/hosted-review/hosted-review-contracts'
 import { assertRemoteUrlReadable } from '../git/remotes/remote-url-probe'
 import { forgetGiteaPullRequestReads } from '../gitea/pull-request-read-forgetting'
+import { forgetCnbPullRequestReads } from '../cnb/pull-request-read-forgetting'
 import type { ForgeProviderId } from './forge-provider'
 import { getForgeProviderForRepository } from './forge-provider-detection'
 import { hostedReviewSshConnectionId } from './hosted-review-execution-host'
@@ -37,6 +38,8 @@ function reviewLinkForProvider(
       return { linkedReviewNumber: input.linkedAzureDevOpsPR ?? null }
     case 'gitea':
       return { linkedReviewNumber: input.linkedGiteaPR ?? null }
+    case 'cnb':
+      return { linkedReviewNumber: input.linkedCnbPR ?? null }
   }
 }
 
@@ -57,6 +60,7 @@ export async function readHostedReviewForBranch(
     linkedBitbucketPR?: number | null
     linkedAzureDevOpsPR?: number | null
     linkedGiteaPR?: number | null
+    linkedCnbPR?: number | null
     currentHeadOid?: string | null
     /** Selected-worktree surfaces earn per-minute pacing (#11532). */
     active?: boolean
@@ -73,7 +77,8 @@ export async function readHostedReviewForBranch(
     input.linkedGitLabMR == null &&
     input.linkedBitbucketPR == null &&
     input.linkedAzureDevOpsPR == null &&
-    input.linkedGiteaPR == null
+    input.linkedGiteaPR == null &&
+    input.linkedCnbPR == null
   ) {
     return cachedHostedReviewOutcome(null)
   }
@@ -129,6 +134,13 @@ export async function readHostedReviewForBranch(
         const providerOptions = provider.id === 'github' ? resolvedInput : input
         if (input.userRefresh === true && provider.id === 'gitea') {
           await forgetGiteaPullRequestReads({
+            repoPath: input.repoPath,
+            executionHostId: input.executionHostId,
+            localGitExecOptions: getHostedReviewLocalGitOptions(input)
+          })
+        }
+        if (input.userRefresh === true && provider.id === 'cnb') {
+          await forgetCnbPullRequestReads({
             repoPath: input.repoPath,
             executionHostId: input.executionHostId,
             localGitExecOptions: getHostedReviewLocalGitOptions(input)

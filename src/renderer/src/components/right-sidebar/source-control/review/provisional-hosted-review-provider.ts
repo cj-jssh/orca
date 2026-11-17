@@ -18,6 +18,7 @@ export function resolveProvisionalHostedReviewProvider(input: {
   linkedBitbucketPR?: number | null
   linkedAzureDevOpsPR?: number | null
   linkedGiteaPR?: number | null
+  linkedCnbPR?: number | null
   // Infer the remote provider before defaulting to GitHub so loading/failed probes retain provider-specific copy.
   remoteInferredProvider?: HostedReviewProvider | null
 }): HostedReviewProvider {

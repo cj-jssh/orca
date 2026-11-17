@@ -65,6 +65,9 @@ function providerForHost(host: string): ManualReviewProvider | null {
   ) {
     return 'azure-devops'
   }
+  if (host === 'cnb.cool') {
+    return 'cnb'
+  }
   return null
 }
 

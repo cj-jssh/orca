@@ -59,6 +59,7 @@ export function useSourceControlHostedReviewEligibility({
   linkedGitHubPR: SourceControlLinkedReviews['linkedGitHubPR']
   linkedGitLabMR: SourceControlLinkedReviews['linkedGitLabMR']
   linkedGiteaPR: SourceControlLinkedReviews['linkedGiteaPR']
+  linkedCnbPR: SourceControlLinkedReviews['linkedCnbPR']
   prGenerating: boolean
   provisionalHostedReviewProvider: SourceControlHostedReviewProviderHint['provisionalHostedReviewProvider']
   remoteStatus: SourceControlWorktreeContext['remoteStatus']

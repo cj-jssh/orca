@@ -28,6 +28,7 @@ export type SourceControlManualReviewContext = ManualReviewUrlInput & {
   linkedBitbucketPR?: number | null
   linkedAzureDevOpsPR?: number | null
   linkedGiteaPR?: number | null
+  linkedCnbPR?: number | null
 }
 
 export function resolveSourceControlManualReviewProvider(input: {
@@ -39,6 +40,7 @@ export function resolveSourceControlManualReviewProvider(input: {
   linkedBitbucketPR?: number | null
   linkedAzureDevOpsPR?: number | null
   linkedGiteaPR?: number | null
+  linkedCnbPR?: number | null
 }): HostedReviewProvider | null {
   return (
     input.hostedReviewProvider ??
@@ -177,6 +179,8 @@ export function buildSourceControlManualReviewUrl(input: ManualReviewUrlInput): 
         targetRef: `refs/heads/${baseBranch}`
       })
     case 'gitea':
+      return `${baseRepo.webBaseUrl}/compare/${encodeCompareRef(baseBranch)}...${encodeCompareRef(headBranch)}`
+    case 'cnb':
       return `${baseRepo.webBaseUrl}/compare/${encodeCompareRef(baseBranch)}...${encodeCompareRef(headBranch)}`
   }
 }

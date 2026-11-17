@@ -4,6 +4,7 @@ import type { PRInfo } from '../../shared/github/pull-requests/pull-request-type
 import type { MRInfo } from '../../shared/gitlab/gitlab-types'
 import type { AzureDevOpsPullRequestInfo } from '../azure-devops/pull-request-mappers'
 import type { BitbucketPullRequestInfo } from '../bitbucket/pull-request-mappers'
+import type { CnbPullRequestInfo } from '../cnb/pull-request-mappers'
 import type { GiteaPullRequestInfo } from '../gitea/pull-request-mappers'
 
 export function mapGitHubReview(pr: PRInfo): HostedReviewInfo {
@@ -74,5 +75,20 @@ export function mapGiteaReview(pr: GiteaPullRequestInfo): HostedReviewInfo {
     updatedAt: pr.updatedAt,
     mergeable: pr.mergeable,
     ...(pr.headSha ? { headSha: pr.headSha } : {})
+  }
+}
+
+export function mapCnbReview(pr: CnbPullRequestInfo): HostedReviewInfo {
+  return {
+    provider: 'cnb',
+    number: pr.number,
+    title: pr.title,
+    state: pr.state,
+    url: pr.url,
+    status: pr.status,
+    updatedAt: pr.updatedAt,
+    mergeable: pr.mergeable,
+    ...(pr.headSha ? { headSha: pr.headSha } : {}),
+    ...(pr.baseRefName ? { baseRefName: pr.baseRefName } : {})
   }
 }

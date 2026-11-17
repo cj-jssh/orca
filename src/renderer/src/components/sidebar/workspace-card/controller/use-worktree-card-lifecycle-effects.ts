@@ -51,6 +51,7 @@ export function useWorktreeCardLifecycleEffects({
     | 'linkedBitbucketPR'
     | 'linkedAzureDevOpsPR'
     | 'linkedGiteaPR'
+    | 'linkedCnbPR'
     | 'branch'
     | 'issueCacheKey'
     | 'linearSourceContext'

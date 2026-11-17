@@ -9,6 +9,7 @@ export type ChecksPanelCheckAndReviewActionsInput = Pick<
   | 'linkedAzureDevOpsPR'
   | 'linkedBitbucketPR'
   | 'linkedGiteaPR'
+  | 'linkedCnbPR'
   | 'linkedGitLabMR'
   | 'linkedPR'
   | 'suppressedGitHubPR'

@@ -8,7 +8,8 @@ const REVIEW_SLOTS = [
   'linkedGitLabMR',
   'linkedBitbucketPR',
   'linkedAzureDevOpsPR',
-  'linkedGiteaPR'
+  'linkedGiteaPR',
+  'linkedCnbPR'
 ] as const
 
 export function hasExplicitWorkspaceReviewSelection(updates: Partial<WorktreeMeta>): boolean {

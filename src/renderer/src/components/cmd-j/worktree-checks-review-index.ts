@@ -66,7 +66,8 @@ export function buildWorktreeChecksReviewIndex({
       linkedGitLabMR: worktree.linkedGitLabMR ?? null,
       linkedBitbucketPR: worktree.linkedBitbucketPR ?? null,
       linkedAzureDevOpsPR: worktree.linkedAzureDevOpsPR ?? null,
-      linkedGiteaPR: worktree.linkedGiteaPR ?? null
+      linkedGiteaPR: worktree.linkedGiteaPR ?? null,
+      linkedCnbPR: worktree.linkedCnbPR ?? null
     })
     if (review) {
       // Persisted IDs repeat across hosts; search preserves these object references during sorting/filtering.

@@ -13,6 +13,7 @@ type SourceControlSuppressionWorktree = Pick<
   | 'linkedBitbucketPR'
   | 'linkedAzureDevOpsPR'
   | 'linkedGiteaPR'
+  | 'linkedCnbPR'
   | 'suppressedGitHubPR'
 >
 
@@ -49,6 +50,7 @@ export function resolveSourceControlSuppressedGitHubPRState({
     worktree.linkedBitbucketPR !== null ||
     worktree.linkedAzureDevOpsPR !== null ||
     worktree.linkedGiteaPR !== null ||
+    worktree.linkedCnbPR !== null ||
     !isPositiveHostedReviewNumber(worktree.suppressedGitHubPR)
   ) {
     return null

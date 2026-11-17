@@ -19,6 +19,7 @@ export type HostedReviewBranchCacheIdentity = {
   linkedBitbucketPR?: number | null
   linkedAzureDevOpsPR?: number | null
   linkedGiteaPR?: number | null
+  linkedCnbPR?: number | null
   localGitExecOptions?: unknown
 }
 

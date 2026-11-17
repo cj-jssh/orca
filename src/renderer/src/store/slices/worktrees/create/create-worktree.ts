@@ -130,6 +130,7 @@ export function createCreateWorktree(
     linkedBitbucketPR,
     linkedAzureDevOpsPR,
     linkedGiteaPR,
+    linkedCnbPR,
     compareBaseRef,
     options
   ) => {
@@ -158,6 +159,7 @@ export function createCreateWorktree(
       linkedBitbucketPR,
       linkedAzureDevOpsPR,
       linkedGiteaPR,
+      linkedCnbPR,
       compareBaseRef,
       options
     }

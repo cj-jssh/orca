@@ -24,6 +24,7 @@ export type ChecksPanelCreatedReviewInput = Pick<
     | 'linkedAzureDevOpsPR'
     | 'linkedBitbucketPR'
     | 'linkedGiteaPR'
+    | 'linkedCnbPR'
     | 'linkedGitLabMR'
     | 'linkedPR'
   > &

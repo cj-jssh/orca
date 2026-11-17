@@ -217,6 +217,7 @@ export function useChecksPanelContextState(model: ChecksPanelContextStateInput) 
     activeWorktree?.linkedBitbucketPR ??
     activeWorktree?.linkedAzureDevOpsPR ??
     activeWorktree?.linkedGiteaPR ??
+    activeWorktree?.linkedCnbPR ??
     null
   // Branch lookup loses fork/deleted-head PRs; prefer known review numbers from metadata/cache.
   const linkedPR = activeWorktree?.linkedPR ?? null
@@ -226,6 +227,7 @@ export function useChecksPanelContextState(model: ChecksPanelContextStateInput) 
   const linkedBitbucketPR = activeWorktree?.linkedBitbucketPR ?? null
   const linkedAzureDevOpsPR = activeWorktree?.linkedAzureDevOpsPR ?? null
   const linkedGiteaPR = activeWorktree?.linkedGiteaPR ?? null
+  const linkedCnbPR = activeWorktree?.linkedCnbPR ?? null
   const activeReview: ChecksPanelReview | null = selectChecksPanelReview({
     hostedReview,
     pr,
@@ -234,7 +236,8 @@ export function useChecksPanelContextState(model: ChecksPanelContextStateInput) 
     linkedGitLabMR,
     linkedBitbucketPR,
     linkedAzureDevOpsPR,
-    linkedGiteaPR
+    linkedGiteaPR,
+    linkedCnbPR
   })
   const activeGitLabReview = isGitLabChecksPanelReview(activeReview) ? activeReview : null
   const isGitLabReviewContext = Boolean(activeGitLabReview || linkedGitLabMR !== null)
@@ -346,6 +349,7 @@ export function useChecksPanelContextState(model: ChecksPanelContextStateInput) 
     linkedBitbucketPR,
     linkedAzureDevOpsPR,
     linkedGiteaPR,
+    linkedCnbPR,
     activeReview,
     activeGitLabReview,
     isGitLabReviewContext,

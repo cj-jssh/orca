@@ -30,6 +30,7 @@ export function floatingWorkspaceToWorktree(path: string): Worktree {
     linkedBitbucketPR: null,
     linkedAzureDevOpsPR: null,
     linkedGiteaPR: null,
+    linkedCnbPR: null,
     linkedWorkItem: null,
     linkedTaskSourceContext: null,
     isArchived: false,

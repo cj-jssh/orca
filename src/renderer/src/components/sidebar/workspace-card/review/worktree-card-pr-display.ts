@@ -28,6 +28,7 @@ type LinkedReviewNumbers = {
   linkedBitbucketPR: number | null
   linkedAzureDevOpsPR: number | null
   linkedGiteaPR: number | null
+  linkedCnbPR: number | null
 }
 
 export type WorktreeCardPrDisplay =
@@ -47,6 +48,7 @@ type WorktreeCardPrDisplayOptions = {
   /** GitHub PR number proven by a branch-scoped lookup. */
   branchLookupGitHubPRNumber?: number | null
   suppressedGitHubPR?: number | null
+  linkedCnbPR?: number | null
 }
 
 function getLinkedReviewNumber(
@@ -64,6 +66,8 @@ function getLinkedReviewNumber(
       return links.linkedAzureDevOpsPR
     case 'gitea':
       return links.linkedGiteaPR
+    case 'cnb':
+      return links.linkedCnbPR
   }
 }
 
@@ -109,14 +113,16 @@ export function getWorktreeCardPrDisplay(
     linkedGitLabMR,
     linkedBitbucketPR,
     linkedAzureDevOpsPR,
-    linkedGiteaPR
+    linkedGiteaPR,
+    linkedCnbPR: options.linkedCnbPR ?? null
   }
   const hasLinkedReview =
     linkedPR !== null ||
     linkedGitLabMR !== null ||
     linkedBitbucketPR !== null ||
     linkedAzureDevOpsPR !== null ||
-    linkedGiteaPR !== null
+    linkedGiteaPR !== null ||
+    (options.linkedCnbPR ?? null) !== null
   if (
     review?.provider === 'github' &&
     isGitHubPRSuppressed(
@@ -171,6 +177,10 @@ export function getWorktreeCardPrDisplay(
 
   if (linkedGiteaPR !== null) {
     return makeLinkedReviewFallback('gitea', linkedGiteaPR, review, t)
+  }
+
+  if (options.linkedCnbPR != null) {
+    return makeLinkedReviewFallback('cnb', options.linkedCnbPR, review, t)
   }
 
   return null

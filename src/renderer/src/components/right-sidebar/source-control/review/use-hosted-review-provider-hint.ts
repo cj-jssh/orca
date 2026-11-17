@@ -48,6 +48,7 @@ export function useSourceControlHostedReviewProviderHint({
   linkedGitHubPR: SourceControlLinkedReviews['linkedGitHubPR']
   linkedGitLabMR: SourceControlLinkedReviews['linkedGitLabMR']
   linkedGiteaPR: SourceControlLinkedReviews['linkedGiteaPR']
+  linkedCnbPR: SourceControlLinkedReviews['linkedCnbPR']
 }) {
   const shouldResolveHostedReviewCreation =
     isBranchVisible &&

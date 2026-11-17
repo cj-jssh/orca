@@ -33,6 +33,8 @@ import {
   getProjectSlug
 } from '../gitlab/merge-requests/merge-request-lookup'
 import { createGitLabMergeRequest } from '../gitlab/merge-requests/merge-request-creation'
+import { cnbForgeProvider } from './forge-provider-cnb'
+import { forgeConnectionId, hostedReviewExecutionArgs } from './forge-provider-context'
 import {
   mapAzureDevOpsReview,
   mapBitbucketReview,
@@ -40,9 +42,7 @@ import {
   mapGitHubReview,
   mapGitLabReview
 } from './forge-review-mappers'
-import { hostedReviewSshConnectionId } from './hosted-review-execution-host'
 import {
-  hasHostedReviewLocalGitOptions,
   getHostedReviewLocalGitOptions,
   type HostedReviewExecutionOptions
 } from './hosted-review-git-options'
@@ -80,19 +80,6 @@ export type ForgeProvider = {
     executionHostId: ExecutionHostId,
     options?: HostedReviewExecutionOptions
   ): Promise<CreateHostedReviewResult>
-}
-
-/** Forge CLIs/API clients run here; only their Git reads route to SSH. */
-function forgeConnectionId(context: ForgeProviderRepositoryContext): string | null {
-  return hostedReviewSshConnectionId(context.executionHostId)
-}
-
-function hostedReviewExecutionArgs(
-  options: HostedReviewExecutionOptions
-): [] | [HostedReviewExecutionOptions] {
-  return hasHostedReviewLocalGitOptions(options)
-    ? [{ localGitExecOptions: getHostedReviewLocalGitOptions(options) }]
-    : []
 }
 
 const gitLabForgeProvider = {
@@ -306,7 +293,8 @@ export const FORGE_PROVIDERS = [
   gitHubForgeProvider,
   bitbucketForgeProvider,
   azureDevOpsForgeProvider,
-  giteaForgeProvider
+  giteaForgeProvider,
+  cnbForgeProvider
 ] as const satisfies readonly ForgeProvider[]
 
 export function getForgeProviderById(id: ForgeProviderId): ForgeProvider {

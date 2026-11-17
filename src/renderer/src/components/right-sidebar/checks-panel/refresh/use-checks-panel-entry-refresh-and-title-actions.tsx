@@ -25,6 +25,7 @@ type ChecksPanelEntryRefreshAndTitleActionsInput = Pick<
   | 'linkedAzureDevOpsPR'
   | 'linkedBitbucketPR'
   | 'linkedGiteaPR'
+  | 'linkedCnbPR'
   | 'linkedGitLabMR'
   | 'linkedPR'
   | 'pr'

@@ -37,7 +37,8 @@ export function canUseParentPrChecksHostedReviewCacheEntry(
     worktree.linkedGiteaPR ?? null,
     {
       reviewHintKey: entry.linkedReviewHintKey,
-      suppressedGitHubPR: worktree.suppressedGitHubPR ?? null
+      suppressedGitHubPR: worktree.suppressedGitHubPR ?? null,
+      linkedCnbPR: worktree.linkedCnbPR ?? null
     },
     t
   )
@@ -78,6 +79,8 @@ function getLinkedReviewNumberForProvider(
       return worktree.linkedAzureDevOpsPR ?? null
     case 'gitea':
       return worktree.linkedGiteaPR ?? null
+    case 'cnb':
+      return worktree.linkedCnbPR ?? null
     case 'unsupported':
       return null
   }
@@ -89,6 +92,7 @@ function hasLinkedReview(worktree: Worktree): boolean {
     worktree.linkedGitLabMR != null ||
     worktree.linkedBitbucketPR != null ||
     worktree.linkedAzureDevOpsPR != null ||
-    worktree.linkedGiteaPR != null
+    worktree.linkedGiteaPR != null ||
+    worktree.linkedCnbPR != null
   )
 }

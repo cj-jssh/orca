@@ -57,6 +57,14 @@ export function localizedHostedReviewCopy(
       providerName: 'Bitbucket'
     }
   }
+  if (provider === 'cnb') {
+    return {
+      shortLabel: t('auto.i18n.hostedReview.copy.f0a4b8c2d1', 'PR'),
+      reviewLabel: t('auto.i18n.hostedReview.copy.e9f3a7b1c0', 'pull request'),
+      titleLabel: t('auto.i18n.hostedReview.copy.d8e2f6a0b9', 'Pull Request'),
+      providerName: 'CNB'
+    }
+  }
   return {
     shortLabel: t('auto.i18n.hostedReview.copy.f0a4b8c2d1', 'PR'),
     reviewLabel: t('auto.i18n.hostedReview.copy.e9f3a7b1c0', 'pull request'),

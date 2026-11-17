@@ -185,7 +185,8 @@ export function useChecksPanelReviewState(model: ChecksPanelReviewStateInput) {
     activeWorktree?.linkedGitLabMR != null ||
     activeWorktree?.linkedBitbucketPR != null ||
     activeWorktree?.linkedAzureDevOpsPR != null ||
-    activeWorktree?.linkedGiteaPR != null
+    activeWorktree?.linkedGiteaPR != null ||
+    activeWorktree?.linkedCnbPR != null
   const isGitHubReviewContext = hostedReviewCreation
     ? hostedReviewCreation.provider === 'github'
     : !hasNonGitHubLinkedReview

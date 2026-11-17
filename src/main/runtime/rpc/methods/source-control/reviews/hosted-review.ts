@@ -29,7 +29,8 @@ export const HOSTED_REVIEW_METHODS = [
         linkedGitLabMR: params.linkedGitLabMR ?? null,
         linkedBitbucketPR: params.linkedBitbucketPR ?? null,
         linkedAzureDevOpsPR: params.linkedAzureDevOpsPR ?? null,
-        linkedGiteaPR: params.linkedGiteaPR ?? null
+        linkedGiteaPR: params.linkedGiteaPR ?? null,
+        linkedCnbPR: params.linkedCnbPR ?? null
       })
     }
   }),
@@ -55,6 +56,7 @@ export const HOSTED_REVIEW_METHODS = [
         linkedBitbucketPR: params.linkedBitbucketPR ?? null,
         linkedAzureDevOpsPR: params.linkedAzureDevOpsPR ?? null,
         linkedGiteaPR: params.linkedGiteaPR ?? null,
+        linkedCnbPR: params.linkedCnbPR ?? null,
         currentHeadOid: params.currentHeadOid ?? null,
         wakeWslDistro: params.wakeWslDistro
       })

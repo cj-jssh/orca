@@ -197,6 +197,7 @@ export function getHostedReviewLinkUpdates(
     linkedBitbucketPR: worktree.linkedBitbucketPR ?? null,
     linkedAzureDevOpsPR: worktree.linkedAzureDevOpsPR ?? null,
     linkedGiteaPR: worktree.linkedGiteaPR ?? null,
+    linkedCnbPR: worktree.linkedCnbPR ?? null,
     pushTarget: worktree.pushTarget
   }
 }
