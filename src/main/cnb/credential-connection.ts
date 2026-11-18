@@ -1,6 +1,7 @@
 import { CNB_API_BASE_URL, getEnvCnbAuthConfig } from './cnb-auth-config'
 import {
   cnbConnectFailure,
+  type CnbConnectArgs,
   type CnbConnectResult,
   type CnbConnectionStatus
 } from '../../shared/cnb/cnb-credentials'
@@ -12,7 +13,6 @@ import {
   hasStoredCnbCredential,
   saveCnbCredential
 } from './credential-store'
-import type { CnbConnectArgs } from '../../shared/cnb/cnb-credentials'
 
 export type { CnbConnectArgs, CnbConnectResult, CnbConnectionStatus }
 
@@ -53,7 +53,8 @@ export async function fetchCnbUserResult(
       await cancelUnreadResponseBody(response)
       return { ok: false, reason: 'unreachable' }
     }
-    return { ok: true, account: cnbAccountName((await response.json()) as RawCnbUser) }
+    const user: RawCnbUser = await response.json()
+    return { ok: true, account: cnbAccountName(user) }
   } catch {
     return { ok: false, reason: 'unreachable' }
   }

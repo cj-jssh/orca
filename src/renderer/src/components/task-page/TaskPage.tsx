@@ -14,6 +14,8 @@ import { useTaskPageJiraListState } from './jira/use-task-page-jira-list-state'
 import { useTaskPageResumeRestoration } from './use-task-page-resume-restoration'
 import { useTaskPageProviderMetadata } from './use-task-page-provider-metadata'
 import { useTaskPageGitLabLoading } from './gitlab/use-task-page-gitlab-loading'
+import { useTaskPageCnbLoading } from './cnb/use-task-page-cnb-loading'
+import { useTaskPageCnbActions } from './cnb/use-task-page-cnb-actions'
 import { useTaskPageLinearListSelection } from './linear/issues/use-task-page-linear-list-selection'
 import { useTaskPageLinearListProjection } from './linear/issues/use-task-page-linear-list-projection'
 import { useTaskPageLinearBoard } from './linear/issues/use-task-page-linear-board'
@@ -57,7 +59,8 @@ export default function TaskPage(): React.JSX.Element {
   const stage13 = useTaskPageResumeRestoration(stage12)
   const stage14 = useTaskPageProviderMetadata(stage13)
   const stage15 = useTaskPageGitLabLoading(stage14)
-  const stage16 = useTaskPageLinearListSelection(stage15)
+  const stage15a = useTaskPageCnbLoading(stage15)
+  const stage16 = useTaskPageLinearListSelection(stage15a)
   const stage17 = useTaskPageLinearListProjection(stage16)
   const stage18 = useTaskPageLinearBoard(stage17)
   const stage19 = useTaskPageJiraListProjection(stage18)
@@ -82,5 +85,6 @@ export default function TaskPage(): React.JSX.Element {
   const stage38 = useTaskPageLinearCollectionEffects(stage37)
   const stage39 = useTaskPageJiraListEffects(stage38)
   const stage40 = useTaskPageComposerActions(stage39)
-  return <TaskPageSurface model={stage40} />
+  const model = useTaskPageCnbActions(stage40)
+  return <TaskPageSurface model={model} />
 }

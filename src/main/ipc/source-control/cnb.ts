@@ -89,11 +89,14 @@ function normalizeIssueRef(value: unknown): { repoPath: string; number: number }
 }
 
 function normalizeCreateIssueArgs(value: unknown): CnbCreateIssueArgs | null {
-  const ref = normalizeIssueRef({ ...(value as object), number: 1 })
-  if (!ref || !value || typeof value !== 'object') {
+  if (!value || typeof value !== 'object') {
     return null
   }
-  const raw = value as Record<string, unknown>
+  const raw: Record<string, unknown> = { ...value }
+  const ref = normalizeIssueRef({ ...raw, number: 1 })
+  if (!ref) {
+    return null
+  }
   const title = optionalString(raw.title)?.trim() ?? ''
   if (!title) {
     return null

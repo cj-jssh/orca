@@ -78,11 +78,13 @@ export async function scanHostedPullRequests<TRaw>(
   const cached = reusableScanCacheEntry(repoKey)
   if (cached) {
     noteProviderCacheAnswer()
+    // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: repoKey carries the caller's provider, so this cache holds that provider's TRaw rows.
     return cached.pullRequests as TRaw[]
   }
   const running = inFlightScans.get(repoKey)
   if (running) {
     noteProviderCacheAnswer()
+    // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: repoKey carries the caller's provider, so this in-flight scan resolves that provider's TRaw rows.
     return running as Promise<TRaw[]>
   }
   const generation = scanGenerations.get(repoKey) ?? 0

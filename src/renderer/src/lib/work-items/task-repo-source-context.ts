@@ -6,9 +6,15 @@ import {
 } from '../../../../shared/work-items/task-source-context'
 import { projectHostSetupProjectionFromRepos } from '../../../../shared/project/host-setup/project-host-setup-projection'
 import { getRepoExecutionHostId } from '../../../../shared/execution-host/execution-host'
+import { parseCnbRemoteUrl } from '../../../../shared/cnb/cnb-remote-url'
+import type { TaskProvider } from '../../../../shared/work-items/task-providers'
+
+/** Providers whose task lists come from the selected repositories. */
+export type RepoBackedTaskProvider = Extract<TaskProvider, 'github' | 'gitlab' | 'cnb'>
+
 export function getTaskPageRepoSourceContext(
   repo: Repo | null | undefined,
-  provider: 'github' | 'gitlab',
+  provider: RepoBackedTaskProvider,
   gitlabProjectRef?: GitLabProjectRef | null
 ): TaskSourceContext | null {
   if (!repo) {
@@ -22,7 +28,9 @@ export function getTaskPageRepoSourceContext(
       ? project.providerIdentity
       : provider === 'gitlab' && gitlabProjectRef
         ? buildGitLabProviderIdentity(gitlabProjectRef)
-        : null
+        : provider === 'cnb'
+          ? buildCnbProviderIdentity(repo)
+          : null
   return normalizeTaskSourceContext({
     provider,
     projectId: setup?.projectId ?? project?.id ?? repo.id,
@@ -32,6 +40,7 @@ export function getTaskPageRepoSourceContext(
     providerIdentity
   })
 }
+
 export function buildGitLabProviderIdentity(projectRef: GitLabProjectRef) {
   const pathParts = projectRef.path
     .split('/')
@@ -45,5 +54,21 @@ export function buildGitLabProviderIdentity(projectRef: GitLabProjectRef) {
     namespace,
     project: projectName,
     webUrl: `https://${projectRef.host}/${projectRef.path}`
+  }
+}
+
+/** CNB serves one public host, so the saved remote names both the slug and its web origin. */
+export function buildCnbProviderIdentity(repo: Pick<Repo, 'gitRemoteIdentity'>) {
+  const parsed = parseCnbRemoteUrl(repo.gitRemoteIdentity?.remoteUrl ?? '')
+  if (!parsed) {
+    return null
+  }
+  const pathParts = parsed.slug.split('/')
+  return {
+    provider: 'cnb' as const,
+    projectId: parsed.slug,
+    namespace: pathParts.length > 1 ? pathParts.slice(0, -1).join('/') : null,
+    project: pathParts.at(-1) ?? null,
+    webUrl: `${parsed.webBaseUrl}/${parsed.slug}`
   }
 }

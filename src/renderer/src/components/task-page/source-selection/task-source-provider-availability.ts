@@ -22,7 +22,7 @@ function isDesktopOwnedHost(hostId: TaskSourceContext['hostId']): boolean {
 }
 
 function getRepoBackedProviderToolStatus(
-  provider: Extract<TaskProvider, 'github' | 'gitlab'>,
+  provider: Extract<TaskProvider, 'github' | 'gitlab' | 'cnb'>,
   preflightStatus: PreflightStatus | null
 ): ProviderAvailabilityStatus | null {
   if (!preflightStatus) {
@@ -30,6 +30,15 @@ function getRepoBackedProviderToolStatus(
   }
   if (provider === 'github') {
     return preflightStatus.gh
+  }
+  if (provider === 'cnb') {
+    // Older servers lack CNB preflight; report a capability gap instead of a missing install.
+    if (!Object.hasOwn(preflightStatus, 'cnb')) {
+      return 'unsupported'
+    }
+    // CNB issues need only its token, so configured is its "installed".
+    const cnb = preflightStatus.cnb
+    return { installed: cnb?.configured === true, authenticated: cnb?.authenticated === true }
   }
   // Older servers can lack GitLab preflight; report a capability gap instead of a fixable missing glab install.
   return Object.hasOwn(preflightStatus, 'glab')
@@ -53,7 +62,7 @@ function getProviderReason(
 }
 
 export function getRepoBackedProviderAvailability(args: {
-  provider: Extract<TaskProvider, 'github' | 'gitlab'>
+  provider: Extract<TaskProvider, 'github' | 'gitlab' | 'cnb'>
   contexts: readonly TaskSourceContext[]
   preflightStatus: PreflightStatus | null
   preflightReady: boolean
@@ -63,7 +72,12 @@ export function getRepoBackedProviderAvailability(args: {
   >
 }): TaskSourceHostAvailability[] {
   return args.contexts.flatMap((context) => {
-    const hostPreflight = isDesktopOwnedHost(context.hostId)
+    const desktopOwned = isDesktopOwnedHost(context.hostId)
+    // CNB reads its token in the desktop process, so a remote host can never answer its list.
+    if (args.provider === 'cnb' && !desktopOwned) {
+      return [{ hostId: context.hostId, reason: 'unsupported-provider' }]
+    }
+    const hostPreflight = desktopOwned
       ? { checked: args.preflightReady, status: args.preflightStatus }
       : args.runtimePreflightStatusByHostId?.get(context.hostId)
     if (!hostPreflight?.checked) {

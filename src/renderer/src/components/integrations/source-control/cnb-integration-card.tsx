@@ -8,6 +8,11 @@ import {
 } from '../presentation/integration-card-shell'
 import { useTranslate } from '@/i18n/use-translate'
 import { isIntegrationCredentialDecryptionError } from '../../../../../shared/secure-storage/integration-credential-errors'
+import { useAppStore } from '@/store'
+import {
+  normalizeVisibleTaskProviders,
+  resolveVisibleTaskProvider
+} from '../../../../../shared/work-items/task-providers'
 import type { CnbConnectionStatus } from '../../../../../shared/cnb/cnb-credentials'
 
 export function CnbIntegrationCard(): React.JSX.Element {
@@ -46,6 +51,20 @@ export function CnbIntegrationCard(): React.JSX.Element {
     }
   }, [t])
 
+  // A fresh connection is the one act that opts CNB into Tasks; hiding it later still sticks.
+  async function revealCnbTaskSource(): Promise<void> {
+    const state = useAppStore.getState()
+    const visible = normalizeVisibleTaskProviders(state.settings?.visibleTaskProviders)
+    if (visible.includes('cnb')) {
+      return
+    }
+    const nextVisible = [...visible, 'cnb' as const]
+    await state.updateSettings({
+      visibleTaskProviders: nextVisible,
+      defaultTaskSource: resolveVisibleTaskProvider(state.settings?.defaultTaskSource, nextVisible)
+    })
+  }
+
   const configured = status?.configured === true
   const stored = status?.source === 'stored'
 
@@ -57,6 +76,9 @@ export function CnbIntegrationCard(): React.JSX.Element {
       if (result.ok) {
         setToken('')
         setStatus(await window.api.cnb.status())
+        // Publishing the new credential shows the CNB task source without a relaunch.
+        void useAppStore.getState().refreshPreflightStatus({ force: true })
+        await revealCnbTaskSource()
       } else {
         setError(result.error)
       }
@@ -73,6 +95,7 @@ export function CnbIntegrationCard(): React.JSX.Element {
     try {
       await window.api.cnb.disconnect()
       setStatus(await window.api.cnb.status())
+      void useAppStore.getState().refreshPreflightStatus({ force: true })
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : String(cause))
     } finally {
@@ -89,16 +112,16 @@ export function CnbIntegrationCard(): React.JSX.Element {
           ? status?.account
             ? t(
                 'auto.components.settings.integrations.cnb.connectedAccount',
-                '{{value0}} · Pull requests and commit statuses',
+                '{{value0}} · Pull requests, commit statuses, and issues',
                 { value0: status.account }
               )
             : t(
                 'auto.components.settings.integrations.cnb.connected',
-                'Pull requests and commit statuses for cnb.cool repositories'
+                'Pull requests, commit statuses, and issues for cnb.cool repositories'
               )
           : t(
               'auto.components.settings.integrations.cnb.disconnected',
-              'Pull requests and commit statuses via the CNB OpenAPI.'
+              'Pull requests, commit statuses, and issues via the CNB OpenAPI.'
             )
       }
       checking={status === null && error === null}
@@ -125,7 +148,9 @@ export function CnbIntegrationCard(): React.JSX.Element {
               'auto.components.settings.integrations.cnb.instructions',
               'Create an access token in cnb.cool (个人设置 → 访问令牌), then paste it here. Set'
             )}{' '}
-            <span className="font-mono text-[11px]">ORCA_CNB_TOKEN</span>{' '}
+            <span className="font-mono text-[11px]">
+              {t('auto.components.settings.integrations.cnb.tokenEnvName', 'ORCA_CNB_TOKEN')}
+            </span>{' '}
             {t(
               'auto.components.settings.integrations.cnb.instructionsEnv',
               'instead to share one token with every Orca window.'
@@ -154,7 +179,7 @@ export function CnbIntegrationCard(): React.JSX.Element {
               {t('auto.components.settings.integrations.cnb.connect', 'Connect')}
             </Button>
           </div>
-          {error ? <p className="text-xs text-rose-500">{error}</p> : null}
+          {error ? <p className="text-xs text-destructive">{error}</p> : null}
         </IntegrationCardDetails>
       ) : null}
     </IntegrationCardShell>

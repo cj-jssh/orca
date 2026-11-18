@@ -1,12 +1,13 @@
-import type { TaskPageComposerActionsModel } from './use-task-page-composer-actions'
+import type { TaskPageCnbActionsModel } from './cnb/use-task-page-cnb-actions'
 import { TaskPageGitHubFilters } from './github/listing/Filters'
 import { TaskPageLinearFilters } from './linear/Filters'
 import { TaskPageJiraFilters } from './jira/Filters'
 import { TaskPageGitLabFilters } from './gitlab/Filters'
+import { TaskPageCnbFilters } from './cnb/Filters'
 export function TaskPageProviderFilters({
   model
 }: {
-  model: TaskPageComposerActionsModel
+  model: TaskPageCnbActionsModel
 }): React.JSX.Element | null {
   const { linearConnected, jiraConnected, taskSource, githubMode } = model
   return taskSource === 'github' && githubMode === 'items' ? (
@@ -18,5 +19,7 @@ export function TaskPageProviderFilters({
     <TaskPageJiraFilters model={model} />
   ) : taskSource === 'gitlab' ? (
     <TaskPageGitLabFilters model={model} />
+  ) : taskSource === 'cnb' ? (
+    <TaskPageCnbFilters model={model} />
   ) : null
 }

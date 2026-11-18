@@ -49,7 +49,8 @@ export type RawCnbCommitStatuses = {
 }
 
 function classifyCnbStatus(status: string | null | undefined): CheckStatus {
-  switch (status?.trim().toLowerCase()) {
+  const value = status?.trim().toLowerCase() ?? ''
+  switch (value) {
     case 'success':
     case 'passed':
       return 'success'
@@ -109,7 +110,8 @@ export function mapCnbPullRequestState(
 }
 
 export function mapCnbMergeableState(value: string | null | undefined): PRMergeableState {
-  switch (value?.trim().toLowerCase()) {
+  const normalized = value?.trim().toLowerCase() ?? ''
+  switch (normalized) {
     case 'mergeable':
     case 'merging':
     case 'merged':

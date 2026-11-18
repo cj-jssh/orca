@@ -25,6 +25,9 @@ export function shouldHideTaskPageListChrome({
       return hasGitHubDetail
     case 'gitlab':
       return hasGitLabDetail
+    case 'cnb':
+      // CNB rows open on cnb.cool, so its list chrome never yields to a detail surface.
+      return false
     case 'jira':
       return hasJiraDetail
     case 'linear':

@@ -25,6 +25,8 @@ export type PreflightStatus = {
     baseUrl: string | null
     tokenConfigured: boolean
   }
+  /** Absent on payloads predating CNB task sources. */
+  cnb?: { configured: boolean; authenticated: boolean; account: string | null }
 }
 
 export type RefreshAgentsResult = {

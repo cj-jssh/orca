@@ -66,6 +66,7 @@ async function requestJson<T>(
       await cancelUnreadResponseBody(response)
       return { ok: false, error: { status: response.status, message: `HTTP ${response.status}` } }
     }
+    // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: CNB's JSON payload is the caller's T; the API shape is documented per endpoint.
     return { ok: true, data: (await response.json()) as T }
   } catch (error) {
     return {

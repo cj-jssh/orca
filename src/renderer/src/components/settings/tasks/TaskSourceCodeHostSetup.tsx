@@ -8,6 +8,8 @@ export function CodeHostSetupSteps(
   props: ConnectStepProps & {
     providerLabel: string
     unavailable?: boolean
+    /** Providers that connect with a stored token replace the CLI wording. */
+    connectedDescription?: string
     onOpenIntegrations: () => void
     onRetryConnection: () => void
   }
@@ -18,10 +20,11 @@ export function CodeHostSetupSteps(
         'auto.components.settings.TasksPane.connectionCheckUnavailable',
         "Orca couldn't check this connection. Try again, or open Integrations for setup details."
       )
-    : t(
+    : (props.connectedDescription ??
+      t(
         'auto.components.settings.TasksPane.connectCodeHostDescription',
         'Install and authenticate the CLI under Integrations so Orca can load issues.'
-      )
+      ))
 
   return (
     <ol className="divide-y divide-border/50">

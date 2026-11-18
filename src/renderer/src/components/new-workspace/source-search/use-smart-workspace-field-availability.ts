@@ -90,6 +90,7 @@ export function useSmartWorkspaceFieldAvailability({
   const availableTaskProviders = useMemo(
     () =>
       filterAvailableTaskProviders(['github', 'gitlab', 'linear'], {
+        cnbConnected: false,
         gitlabInstalled: gitlabSourceAvailable,
         linearConnected: linearStatus.connected === true
       }),

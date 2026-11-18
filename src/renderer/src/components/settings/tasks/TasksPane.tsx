@@ -9,6 +9,7 @@ import {
   resolveVisibleTaskProvider
 } from '../../../../../shared/work-items/task-providers'
 import { JiraIcon } from '@/components/icons/JiraIcon'
+import { CnbIcon } from '@/components/icons/CnbIcon'
 import { LinearIcon } from '@/components/icons/LinearIcon'
 import { Button } from '@/components/ui/button'
 import { useAppStore } from '@/store/index'
@@ -68,6 +69,18 @@ const PROVIDER_META: Record<
       )
     },
     Icon: ({ className }) => <Gitlab className={className} />
+  },
+  cnb: {
+    get label() {
+      return translate('auto.components.settings.TasksPane.cnbLabel', 'CNB')
+    },
+    get description() {
+      return translate(
+        'auto.components.settings.TasksPane.cnbDescription',
+        'Browse cnb.cool issues, file new ones, and start workspaces from them.'
+      )
+    },
+    Icon: ({ className }) => <CnbIcon className={className} />
   },
   linear: {
     get label() {
@@ -223,6 +236,14 @@ export function TasksPane({ settings, updateSettings }: TasksPaneProps): React.J
               ) : (
                 <CodeHostSetupSteps
                   providerLabel={meta.label}
+                  connectedDescription={
+                    provider === 'cnb'
+                      ? t(
+                          'auto.components.settings.TasksPane.cnbConnectDescription',
+                          'Connect CNB with an access token under Integrations so Orca can load and file issues.'
+                        )
+                      : undefined
+                  }
                   connected={readiness.connected}
                   checking={readiness.checking}
                   unavailable={readiness.unavailable}

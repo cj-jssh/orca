@@ -2,6 +2,7 @@ import React from 'react'
 import { EyeOff, Github, Gitlab, List } from 'lucide-react'
 import { JiraIcon } from '@/components/icons/JiraIcon'
 import { LinearIcon } from '@/components/icons/LinearIcon'
+import { CnbIcon } from '@/components/icons/CnbIcon'
 import {
   ContextMenu,
   ContextMenuContent,
@@ -90,6 +91,7 @@ export function SidebarTaskNavButton(): React.JSX.Element | null {
         preferredVisibleTaskProviders,
         {
           gitlabInstalled: preflightStatusCurrent && preflightStatus?.glab?.installed === true,
+          cnbConnected: preflightStatusCurrent && preflightStatus?.cnb?.configured === true,
           linearConnected: linearStatus.connected === true
         },
         defaultTaskSource
@@ -99,6 +101,7 @@ export function SidebarTaskNavButton(): React.JSX.Element | null {
       linearStatus.connected,
       preferredVisibleTaskProviders,
       preflightStatusCurrent,
+      preflightStatus?.cnb?.configured,
       preflightStatus?.glab?.installed
     ]
   )
@@ -201,6 +204,14 @@ export function SidebarTaskNavButton(): React.JSX.Element | null {
                 onOpen={() => openTaskPage({ taskSource: 'gitlab' })}
               >
                 <Gitlab className="size-3.5" aria-hidden />
+              </TaskProviderShortcut>
+            ) : null}
+            {visibleTaskProviders.includes('cnb') ? (
+              <TaskProviderShortcut
+                label={t('auto.components.sidebar.SidebarNav.cnbTasks', 'Open CNB tasks')}
+                onOpen={() => openTaskPage({ taskSource: 'cnb' })}
+              >
+                <CnbIcon className="size-3.5" />
               </TaskProviderShortcut>
             ) : null}
             {visibleTaskProviders.includes('linear') ? (

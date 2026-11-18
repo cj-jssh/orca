@@ -3965,7 +3965,22 @@
           "linearViewNotFound": "Saved Linear view was not found.",
           "linearViewRestoreFailed": "Failed to restore saved Linear view."
         },
-        "shownCount_one": "{{count}} shown"
+        "shownCount_one": "{{count}} shown",
+        "cnbNewIssue": "New issue",
+        "cnbRefreshIssues": "Refresh CNB issues",
+        "cnbNewIssueTitle": "New CNB issue",
+        "cnbNoRepository": "Select a cnb.cool project to file this issue.",
+        "cnbIssueTitlePlaceholder": "Issue title",
+        "cnbIssueBodyPlaceholder": "Describe the issue (Markdown)",
+        "cnbIssueBodyLabel": "Describe the issue",
+        "cnbCancel": "Cancel",
+        "cnbCreateIssue": "Create issue",
+        "cnbColumnRepository": "Repository",
+        "cnbStartWorkspaceUnlinked": "Add this repository to Orca to start a workspace",
+        "cnbOpenInCnb": "Open in CNB",
+        "cnbScopeRepo": "This project",
+        "cnbSource": "CNB",
+        "cnbIssueCreated": "Opened issue #{{value0}}"
       },
       "Terminal": {
         "73768427cf": "Close",
@@ -7145,7 +7160,8 @@
           "fee535205b": "Tasks",
           "d599269755": "Hide from sidebar",
           "artifacts": "Artifacts",
-          "skills": "Skills"
+          "skills": "Skills",
+          "cnbTasks": "Open CNB tasks"
         },
         "SidebarRepositoryFilterSection": {
           "d3a9c4cea1": "Clear",
@@ -10119,7 +10135,10 @@
           "integrationsLink": "Integrations",
           "skillHint": ". After Linear is connected, usage examples stay under Settings → Linear.",
           "incompleteBannerBodyWithLinear": "Hide providers you do not use, or expand a card and finish its steps. For Linear: API access, the agent skill, and Show in Tasks.",
-          "30255b39dc": "Task providers"
+          "30255b39dc": "Task providers",
+          "cnbLabel": "CNB",
+          "cnbDescription": "Browse cnb.cool issues, file new ones, and start workspaces from them.",
+          "cnbConnectDescription": "Connect CNB with an access token under Integrations so Orca can load and file issues."
         },
         "TerminalAppearanceSection": {
           "a14a427ae4": "Thickness of the pane divider line.",
@@ -11414,6 +11433,23 @@
             "cd74b2f587": "GitLab integration",
             "d905b3ecee": "Linear integration",
             "b3efe7ab71": "Azure DevOps integration"
+          },
+          "cnb": {
+            "decryptFailed": "Could not decrypt the saved CNB token. Reconnect CNB.",
+            "statusFailed": "Could not read the CNB connection status.",
+            "connectedAccount": "{{value0}} · Pull requests, commit statuses, and issues",
+            "connected": "Pull requests, commit statuses, and issues for cnb.cool repositories",
+            "disconnected": "Pull requests, commit statuses, and issues via the CNB OpenAPI.",
+            "envStatus": "Connected via env",
+            "storedStatus": "Connected",
+            "notConfiguredStatus": "Not connected",
+            "disconnect": "Disconnect",
+            "instructions": "Create an access token in cnb.cool (个人设置 → 访问令牌), then paste it here. Set",
+            "instructionsEnv": "instead to share one token with every Orca window.",
+            "tokenPlaceholder": "CNB access token",
+            "tokenLabel": "CNB access token",
+            "connect": "Connect",
+            "tokenEnvName": "ORCA_CNB_TOKEN"
           }
         },
         "jira": {
@@ -11905,7 +11941,8 @@
             "apiKey": "api key",
             "skill": "skill",
             "connect": "connect",
-            "12d2fdff3c": "Task providers"
+            "12d2fdff3c": "Task providers",
+            "cnb": "cnb"
           }
         },
         "terminal": {
@@ -19570,7 +19607,11 @@
         "noGitLabMrsTitle": "No GitLab merge requests",
         "noGitLabMrsDescription": "No GitLab MRs match this filter.",
         "noGitLabWorkTitle": "No GitLab work",
-        "noGitLabWorkDescription": "No GitLab work matches this filter."
+        "noGitLabWorkDescription": "No GitLab work matches this filter.",
+        "noCnbIssuesTitle": "No CNB issues",
+        "noCnbIssuesDescription": "No CNB issues match this filter in the selected cnb.cool repositories.",
+        "noCnbRepoTitle": "No cnb.cool project",
+        "noCnbRepoDescription": "CNB tasks read issues from cnb.cool repositories. Select one of those projects to see its issues."
       },
       "taskSourceContextSummary": {
         "sourceUnavailable": "{{value0}} source unavailable: {{value1}}",
@@ -23377,7 +23418,9 @@
         "stackRegistrationUnavailable": "The pull request was created, but GitHub stacks are not available for this repository.",
         "stackRegistrationFailed": "The pull request was created, but GitHub could not add it to the stack. Retry to finish stack registration."
       },
-      "baseHeadTitleRequired": "base branch, head branch, and title are required."
+      "baseHeadTitleRequired": "base branch, head branch, and title are required.",
+      "authRequiredCnb": "CNB is not authenticated. Next step: set ORCA_CNB_TOKEN in this environment, or connect CNB in Settings > Integrations.",
+      "signInHintCnb": "Set ORCA_CNB_TOKEN or connect CNB in Settings > Integrations"
     },
     "variables": {
       "basePrompt": "Orca’s built-in prompt for this action, including the context Orca knows how to gather safely.",
@@ -24391,7 +24434,8 @@
         "jira_task_url": "Jira task (URL)",
         "bitbucket_pr": "Bitbucket PR",
         "azure_devops_pr": "Azure DevOps PR",
-        "gitea_pr": "Gitea PR"
+        "gitea_pr": "Gitea PR",
+        "cnb_pr": "CNB PR"
       },
       "mrReference": "MR !{{number}}",
       "prReference": "PR #{{number}}",

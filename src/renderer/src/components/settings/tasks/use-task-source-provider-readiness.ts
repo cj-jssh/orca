@@ -57,6 +57,8 @@ export function useTaskSourceProviderReadiness(
     reviewReadyForConnection &&
     preflightStatus?.glab?.installed === true &&
     preflightStatus.glab.authenticated === true
+  // CNB needs only its token; older servers omit cnb, which reads as not connected.
+  const cnbConnected = reviewReadyForConnection && preflightStatus?.cnb?.authenticated === true
   const jiraChecking = jiraStatusContextKey !== providerRuntimeContextKey || !jiraStatusChecked
   const jiraConnected = !jiraChecking && jiraStatus.connected === true
   const linearChecking =
@@ -79,6 +81,12 @@ export function useTaskSourceProviderReadiness(
         unavailable: reviewUnavailable,
         visible: visible.has('gitlab')
       },
+      cnb: {
+        connected: cnbConnected,
+        checking: reviewChecking,
+        unavailable: reviewUnavailable,
+        visible: visible.has('cnb')
+      },
       linear: {
         connected: linearConnected,
         checking: linearChecking,
@@ -94,6 +102,7 @@ export function useTaskSourceProviderReadiness(
       }
     }
   }, [
+    cnbConnected,
     githubConnected,
     gitlabConnected,
     jiraChecking,

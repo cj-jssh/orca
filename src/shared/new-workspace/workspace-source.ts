@@ -28,6 +28,11 @@ export type GitLabWorkspaceSource = WorkspaceSourceLinkedItem & {
   type: 'issue' | 'mr'
 }
 
+export type CnbWorkspaceSource = WorkspaceSourceLinkedItem & {
+  provider: 'cnb'
+  type: 'issue'
+}
+
 export type LinearWorkspaceSource = WorkspaceSourceLinkedItem & {
   provider: 'linear'
   type: 'issue'
@@ -47,6 +52,7 @@ export type WorkspaceSourceSelectionKind =
   | 'github-issue'
   | 'gitlab-mr'
   | 'gitlab-issue'
+  | 'cnb-issue'
   | 'branch'
   | 'linear'
   | 'jira'
@@ -116,6 +122,15 @@ export function buildGitLabWorkspaceSource(item: {
   repoId?: string
 }): GitLabWorkspaceSource {
   return { provider: 'gitlab', ...item }
+}
+
+export function buildCnbWorkspaceSource(item: {
+  number: number
+  title: string
+  url: string
+  repoId?: string
+}): CnbWorkspaceSource {
+  return { provider: 'cnb', type: 'issue', ...item }
 }
 
 export function getUsableLinearBranchName(
@@ -204,9 +219,11 @@ export function buildWorkspaceSourceSelection(args: {
           ? linkedWorkItem.type === 'mr'
             ? 'gitlab-mr'
             : 'gitlab-issue'
-          : linkedWorkItem.type === 'pr'
-            ? 'github-pr'
-            : 'github-issue'
+          : provider === 'cnb'
+            ? 'cnb-issue'
+            : linkedWorkItem.type === 'pr'
+              ? 'github-pr'
+              : 'github-issue'
   return {
     kind,
     label:

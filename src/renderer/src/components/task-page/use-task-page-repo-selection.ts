@@ -133,6 +133,7 @@ export function useTaskPageRepoSelection(model: TaskPageStoreBindingsModel) {
         preferredVisibleTaskProviders,
         {
           gitlabInstalled: preflightStatusCurrent && preflightStatus?.glab?.installed === true,
+          cnbConnected: preflightStatusCurrent && preflightStatus?.cnb?.configured === true,
           linearConnected: linearConnected === true
         },
         defaultTaskSource
@@ -142,6 +143,7 @@ export function useTaskPageRepoSelection(model: TaskPageStoreBindingsModel) {
       linearConnected,
       preferredVisibleTaskProviders,
       preflightStatusCurrent,
+      preflightStatus?.cnb?.configured,
       preflightStatus?.glab?.installed
     ]
   )
