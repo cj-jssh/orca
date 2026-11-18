@@ -107,6 +107,7 @@
 2 src/main/cli/launchers/linux-bare-orca-dispatcher.ts
 7 src/main/cli/launchers/linux-terminal-orca-cli-shim.ts
 2 src/main/cli/wsl/wsl-managed-cli.ts
+7 src/main/cnb/credential-store.ts # one-shot token/keychain read cached for the process, mirroring bitbucket/credential-store.ts
 3 src/main/codex-accounts/account-management/codex-account-registration.ts
 2 src/main/codex-accounts/credentials/codex-account-identity.ts
 1 src/main/codex-accounts/credentials/codex-credential-absence-grace.ts

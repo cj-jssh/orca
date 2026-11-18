@@ -2,6 +2,8 @@ import type { TaskPageSourceAvailabilityModel } from './use-task-page-source-ava
 import { useRef, useState, useEffect, useMemo } from 'react'
 import { resolveVisibleTaskProvider } from '../../../../shared/work-items/task-providers'
 import type {
+  CnbIssueFilter,
+  CnbIssueScope,
   GitLabTaskFilter,
   GitLabIssueFilter
 } from '@/components/task-page/task-page-localized-options'
@@ -12,6 +14,14 @@ import type {
 } from '../../../../shared/gitlab/gitlab-types'
 import { getRepoBackedTaskEmptyState } from './task-page-empty-state'
 import { isGitLabIssueFilter, isGitLabMRFilter } from './task-page-source-context'
+import type { CnbTaskItem } from './cnb/task-page-cnb-issues'
+import { getCnbEligibleRepos, getCnbTaskEmptyState } from './cnb/task-page-cnb-issues'
+
+export type TaskPageCnbNewIssueDraft = {
+  repoId: string | null
+  title: string
+  body: string
+}
 export function useTaskPageProviderState(model: TaskPageSourceAvailabilityModel) {
   const {
     settings,
@@ -72,6 +82,34 @@ export function useTaskPageProviderState(model: TaskPageSourceAvailabilityModel)
   const [gitlabRefreshNonce, setGitlabRefreshNonce] = useState(0)
   // Keep dialog targets outside the list so filtering/refresh cannot remove their context.
   const [gitlabDialogItem, setGitlabDialogItem] = useState<GitLabWorkItem | null>(null)
+
+  const [cnbFilter, setCnbFilter] = useState<CnbIssueFilter>('open')
+  const [cnbScope, setCnbScope] = useState<CnbIssueScope>('repo')
+  const [cnbItems, setCnbItems] = useState<CnbTaskItem[]>([])
+  const [cnbLoading, setCnbLoading] = useState(false)
+  const [cnbError, setCnbError] = useState<string | null>(null)
+  const [cnbRefreshNonce, setCnbRefreshNonce] = useState(0)
+  const [cnbNewIssueOpen, setCnbNewIssueOpen] = useState(false)
+  const [cnbNewIssueSubmitting, setCnbNewIssueSubmitting] = useState(false)
+  const [cnbNewIssue, setCnbNewIssue] = useState<TaskPageCnbNewIssueDraft>({
+    repoId: null,
+    title: '',
+    body: ''
+  })
+  // CNB answers one repository at a time, so only cnb.cool projects may join the fan-out.
+  const cnbEligibleRepos = useMemo(() => getCnbEligibleRepos(selectedRepos), [selectedRepos])
+  const cnbNewIssueTargetRepo = useMemo(() => {
+    const preferred = cnbEligibleRepos.find((repo) => repo.id === cnbNewIssue.repoId)
+    return preferred ?? cnbEligibleRepos[0] ?? null
+  }, [cnbEligibleRepos, cnbNewIssue.repoId])
+  const cnbEmptyState = useMemo(
+    () =>
+      getCnbTaskEmptyState({
+        selectedRepoCount: selectedRepos.length,
+        eligibleRepoCount: cnbEligibleRepos.length
+      }),
+    [cnbEligibleRepos.length, selectedRepos.length]
+  )
 
   const [gitlabView, setGitlabView] = useState<'issues' | 'mrs' | 'todos'>('mrs')
   const [gitlabTodos, setGitlabTodos] = useState<GitLabTodo[]>([])
@@ -141,6 +179,27 @@ export function useTaskPageProviderState(model: TaskPageSourceAvailabilityModel)
     setGitlabTodos: typeof setGitlabTodos
     gitlabTodosLoading: typeof gitlabTodosLoading
     setGitlabTodosLoading: typeof setGitlabTodosLoading
+    cnbFilter: typeof cnbFilter
+    setCnbFilter: typeof setCnbFilter
+    cnbScope: typeof cnbScope
+    setCnbScope: typeof setCnbScope
+    cnbItems: typeof cnbItems
+    setCnbItems: typeof setCnbItems
+    cnbLoading: typeof cnbLoading
+    setCnbLoading: typeof setCnbLoading
+    cnbError: typeof cnbError
+    setCnbError: typeof setCnbError
+    cnbRefreshNonce: typeof cnbRefreshNonce
+    setCnbRefreshNonce: typeof setCnbRefreshNonce
+    cnbNewIssueOpen: typeof cnbNewIssueOpen
+    setCnbNewIssueOpen: typeof setCnbNewIssueOpen
+    cnbNewIssueSubmitting: typeof cnbNewIssueSubmitting
+    setCnbNewIssueSubmitting: typeof setCnbNewIssueSubmitting
+    cnbNewIssue: typeof cnbNewIssue
+    setCnbNewIssue: typeof setCnbNewIssue
+    cnbEligibleRepos: typeof cnbEligibleRepos
+    cnbNewIssueTargetRepo: typeof cnbNewIssueTargetRepo
+    cnbEmptyState: typeof cnbEmptyState
     gitlabEmptyState: typeof gitlabEmptyState
     gitlabFilterIsValid: typeof gitlabFilterIsValid
     activeGitlabFilter: typeof activeGitlabFilter
@@ -180,6 +239,27 @@ export function useTaskPageProviderState(model: TaskPageSourceAvailabilityModel)
   nextModel.setGitlabTodos = setGitlabTodos
   nextModel.gitlabTodosLoading = gitlabTodosLoading
   nextModel.setGitlabTodosLoading = setGitlabTodosLoading
+  nextModel.cnbFilter = cnbFilter
+  nextModel.setCnbFilter = setCnbFilter
+  nextModel.cnbScope = cnbScope
+  nextModel.setCnbScope = setCnbScope
+  nextModel.cnbItems = cnbItems
+  nextModel.setCnbItems = setCnbItems
+  nextModel.cnbLoading = cnbLoading
+  nextModel.setCnbLoading = setCnbLoading
+  nextModel.cnbError = cnbError
+  nextModel.setCnbError = setCnbError
+  nextModel.cnbRefreshNonce = cnbRefreshNonce
+  nextModel.setCnbRefreshNonce = setCnbRefreshNonce
+  nextModel.cnbNewIssueOpen = cnbNewIssueOpen
+  nextModel.setCnbNewIssueOpen = setCnbNewIssueOpen
+  nextModel.cnbNewIssueSubmitting = cnbNewIssueSubmitting
+  nextModel.setCnbNewIssueSubmitting = setCnbNewIssueSubmitting
+  nextModel.cnbNewIssue = cnbNewIssue
+  nextModel.setCnbNewIssue = setCnbNewIssue
+  nextModel.cnbEligibleRepos = cnbEligibleRepos
+  nextModel.cnbNewIssueTargetRepo = cnbNewIssueTargetRepo
+  nextModel.cnbEmptyState = cnbEmptyState
   nextModel.gitlabEmptyState = gitlabEmptyState
   nextModel.gitlabFilterIsValid = gitlabFilterIsValid
   nextModel.activeGitlabFilter = activeGitlabFilter

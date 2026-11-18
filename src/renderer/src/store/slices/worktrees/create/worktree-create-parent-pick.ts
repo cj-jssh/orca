@@ -176,6 +176,21 @@ function parentLabel(state: AppState, parent: WorktreeCreateParentPick): string 
   return workspace?.name.trim() || null
 }
 
+/** Warns once per create attempt: a retry must not repeat the same dropped-parent toast. */
+export function createParentDropWarner(
+  get: () => AppState,
+  parent: WorktreeCreateParentPick
+): () => void {
+  let warned = false
+  return () => {
+    if (warned) {
+      return
+    }
+    warned = true
+    notifyWorktreeParentDropped(get(), parent)
+  }
+}
+
 export function notifyWorktreeParentDropped(
   state: AppState,
   parent: WorktreeCreateParentPick

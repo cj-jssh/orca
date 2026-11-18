@@ -2,6 +2,7 @@ import React from 'react'
 import { Github, Gitlab, LayoutGrid, List } from 'lucide-react'
 
 import { JiraIcon } from '@/components/icons/JiraIcon'
+import { CnbIcon } from '@/components/icons/CnbIcon'
 import { createLocalizedCatalog } from '@/i18n/localized-catalog'
 import { translate } from '@/i18n/i18n'
 import {
@@ -22,6 +23,10 @@ import type { TaskViewPresetId } from '../../../../shared/ui-chrome/ui-chrome-ty
 
 export type GitLabTaskFilter = 'opened' | 'merged' | 'closed' | 'all'
 export type GitLabIssueFilter = 'opened' | 'assigned-to-me'
+
+/** CNB lists one repository or the token user's assigned issues, filtered by state. */
+export type CnbIssueFilter = 'open' | 'closed' | 'all'
+export type CnbIssueScope = 'repo' | 'mine'
 
 export type TaskQueryPreset = {
   id: TaskViewPresetId
@@ -124,6 +129,21 @@ export const getGitHubPRWhoChips = createLocalizedCatalog(
   ]
 )
 
+export const getCnbIssueStateFilters = createLocalizedCatalog(
+  (): { id: CnbIssueFilter; label: string }[] => [
+    { id: 'open', label: translate('auto.components.TaskPage.606a85c774', 'Open') },
+    { id: 'closed', label: translate('auto.components.TaskPage.d09bf34db7', 'Closed') },
+    { id: 'all', label: translate('auto.components.TaskPage.c2268a9982', 'All') }
+  ]
+)
+
+export const getCnbIssueScopeFilters = createLocalizedCatalog(
+  (): { id: CnbIssueScope; label: string }[] => [
+    { id: 'repo', label: translate('auto.components.TaskPage.cnbScopeRepo', 'This project') },
+    { id: 'mine', label: translate('auto.components.TaskPage.94f0339621', 'Assigned to me') }
+  ]
+)
+
 export const getSourceOptions = createLocalizedCatalog((): SourceOption[] => [
   {
     id: 'github',
@@ -134,6 +154,11 @@ export const getSourceOptions = createLocalizedCatalog((): SourceOption[] => [
     id: 'gitlab',
     label: translate('auto.components.TaskPage.11a828abf8', 'GitLab'),
     Icon: ({ className }) => <Gitlab className={className} />
+  },
+  {
+    id: 'cnb',
+    label: translate('auto.components.TaskPage.cnbSource', 'CNB'),
+    Icon: ({ className }) => <CnbIcon className={className} />
   },
   {
     id: 'linear',

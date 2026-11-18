@@ -56,7 +56,7 @@ function readMetadataFromDisk(): CnbStoredMetadata | null {
     return null
   }
   try {
-    const parsed = JSON.parse(readFileSync(path, 'utf-8')) as Partial<CnbStoredMetadata>
+    const parsed: Partial<CnbStoredMetadata> = JSON.parse(readFileSync(path, 'utf-8'))
     return {
       version: 1,
       account: asOptionalString(parsed.account),
@@ -101,7 +101,7 @@ export function loadStoredCnbSecret(options: { force?: boolean } = {}): CnbStore
     if (!token) {
       return null
     }
-    const parsed = JSON.parse(token) as Partial<CnbStoredSecret>
+    const parsed: Partial<CnbStoredSecret> = JSON.parse(token)
     cachedSecret = { token: asOptionalString(parsed.token) }
     credentialError = null
     return cachedSecret
@@ -144,7 +144,7 @@ export function clearStoredCnbCredential(): void {
       try {
         unlinkSync(path)
       } catch (error) {
-        if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+        if (!isMissingFileError(error)) {
           throw error
         }
       }
@@ -156,4 +156,12 @@ export function clearStoredCnbCredential(): void {
     cachedSecret = null
     credentialError = null
   }
+}
+
+function isMissingFileError(error: unknown): boolean {
+  if (typeof error !== 'object' || error === null || !('code' in error)) {
+    return false
+  }
+  // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the `code` membership check above narrows this object to a Node error shape.
+  return (error as { code?: unknown }).code === 'ENOENT'
 }

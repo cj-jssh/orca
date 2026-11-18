@@ -1,10 +1,10 @@
-import type { TaskPageComposerActionsModel } from './use-task-page-composer-actions'
+import type { TaskPageCnbActionsModel } from './cnb/use-task-page-cnb-actions'
 import { TaskPageListChrome } from './ListChrome'
 import { TaskPageContent } from './Content'
 export function TaskPageFrame({
   model
 }: {
-  model: TaskPageComposerActionsModel
+  model: TaskPageCnbActionsModel
 }): React.JSX.Element | null {
   return (
     <div className="relative flex min-h-0 min-w-0 flex-1 flex-col">

@@ -48,8 +48,8 @@ import {
   withoutRefusedInferredParent
 } from './worktree-create-cross-store-parent'
 import {
+  createParentDropWarner,
   lostRequestedParent,
-  notifyWorktreeParentDropped,
   resolveWorktreeCreateParent,
   type CreateAttemptOutcome
 } from './worktree-create-parent-pick'
@@ -204,14 +204,7 @@ export function createCreateWorktree(
       }
       // Why outside the retry loop: a branch-name conflict retry must not re-warn about the same dropped pick.
       const parent = resolveWorktreeCreateParent(get(), options?.parentWorktreeId, creationHostId)
-      let warnedParentDropped = false
-      const warnParentDroppedOnce = (): void => {
-        if (warnedParentDropped) {
-          return
-        }
-        warnedParentDropped = true
-        notifyWorktreeParentDropped(get(), parent)
-      }
+      const warnParentDroppedOnce = createParentDropWarner(get, parent)
       if (parent.staleBeforeCreate) {
         warnParentDroppedOnce()
       }

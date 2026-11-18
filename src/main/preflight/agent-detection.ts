@@ -10,6 +10,7 @@ import {
 import { getAzureDevOpsAuthStatus } from '../azure-devops/client'
 import { getBitbucketAuthStatus } from '../bitbucket/client'
 import { getGiteaAuthStatus } from '../gitea/client'
+import { getCnbConnectionStatus } from '../cnb/credential-connection'
 import { _resetKnownHostsCache } from '../gitlab/projects/gitlab-known-host-probe'
 import { mergePersistedWindowsPathAsync } from '../pty/environment/windows-environment-path'
 import type { WslPreflightTarget } from '../ipc/preflight/preflight-wsl-agent-detection'
@@ -64,6 +65,7 @@ export type PreflightStatus = {
     baseUrl: string | null
     tokenConfigured: boolean
   }
+  cnb?: { configured: boolean; authenticated: boolean; account: string | null }
 }
 
 export { detectRemoteWindowsTerminalCapabilities }
@@ -280,6 +282,8 @@ async function executePreflightCheck(
     detectCommandRuntime('glab', context)
   ])
 
+  // CNB reads its encrypted credential synchronously, so it never joins this promise batch.
+  const cnb = getCnbConnectionStatus()
   const [ghAuthenticated, glabAuthenticated, bitbucket, azureDevOps, gitea] = await Promise.all([
     ghProbe.installed ? isGhAuthenticated(ghProbe) : Promise.resolve(false),
     glabProbe.installed ? isGlabAuthenticated(glabProbe) : Promise.resolve(false),
@@ -294,6 +298,8 @@ async function executePreflightCheck(
     glab: { installed: glabProbe.installed, authenticated: glabAuthenticated },
     bitbucket,
     azureDevOps,
-    gitea
+    gitea,
+    // CNB issues only need its own encrypted token, not a CLI install.
+    cnb: { configured: cnb.configured, authenticated: cnb.configured, account: cnb.account }
   }
 }

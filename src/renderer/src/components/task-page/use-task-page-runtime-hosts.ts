@@ -51,7 +51,7 @@ export function useTaskPageRuntimeHosts(model: TaskPageRepoSelectionModel) {
   )
   const taskSourceRepoContexts = useMemo(
     () =>
-      taskSource === 'github' || taskSource === 'gitlab'
+      taskSource === 'github' || taskSource === 'gitlab' || taskSource === 'cnb'
         ? selectedRepos
             .map((repo) => getTaskPageRepoSourceContext(repo, taskSource))
             .filter((context): context is TaskSourceContext => context !== null)
@@ -88,6 +88,7 @@ export function useTaskPageRuntimeHosts(model: TaskPageRepoSelectionModel) {
     [hostRegistryById, t]
   )
   const runtimeTaskSourceHostIds = useMemo(() => {
+    // CNB reads its token in the desktop process, so a runtime host has nothing to preflight.
     if (taskSource !== 'github' && taskSource !== 'gitlab') {
       return []
     }

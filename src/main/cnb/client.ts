@@ -67,6 +67,7 @@ async function requestJson<T>(
       }
       return null
     }
+    // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: CNB's JSON payload is the caller's T; the API shape is documented per endpoint.
     return (await response.json()) as T
   } catch (error) {
     if (throwOnFailure) {

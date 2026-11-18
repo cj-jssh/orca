@@ -1,4 +1,4 @@
-import type { TaskPageComposerActionsModel } from './use-task-page-composer-actions'
+import type { TaskPageCnbActionsModel } from './cnb/use-task-page-cnb-actions'
 import { cn } from '@/lib/class-names'
 import { TaskPageSourceBar } from './SourceBar'
 import { AlertCircle } from 'lucide-react'
@@ -7,7 +7,7 @@ import { TaskPageProviderFilters } from './ProviderFilters'
 export function TaskPageListChrome({
   model
 }: {
-  model: TaskPageComposerActionsModel
+  model: TaskPageCnbActionsModel
 }): React.JSX.Element | null {
   const { taskSourceAvailabilityNotice, taskPageListChromeHidden } = model
   return (

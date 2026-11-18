@@ -195,6 +195,10 @@ function externalUrl(item: WorkspaceAttachment): string | undefined {
       return identity.webUrl
         ? `${identity.webUrl.replace(/\/+$/, '')}/-/${item.type === 'mr' ? 'merge_requests' : 'issues'}/${item.number}`
         : undefined
+    case 'cnb':
+      return identity.webUrl
+        ? `${identity.webUrl.replace(/\/+$/, '')}/-/issues/${item.number}`
+        : undefined
     case 'jira':
       return identity.siteUrl && identifier
         ? `${identity.siteUrl.replace(/\/+$/, '')}/browse/${identifier}`
